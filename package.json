@@ -1,0 +1,15 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "Logisch programmeren project 2023-2024",
+  "scripts": {
+    "test.random": "node ./tests/random/random.js",
+    "test.io": "node ./tests/grading/test.js"
+  },
+  "type": "module",
+  "author": "tolauwae",
+  "license": "ISC",
+  "dependencies": {
+    "chess.js": "^1.0.0-beta.8"
+  }
+}
