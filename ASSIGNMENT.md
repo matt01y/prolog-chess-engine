@@ -200,12 +200,12 @@ In uitzonderlijke gevallen is geen van beide opties voldoende alleen, dan worden
 
 Bij promotie van een pion wordt het nieuwe stuk achteraan toegevoegd, gescheiden door een "=". Bijvoorbeeld, als de pion op e7 naar een koning promoveert op veld e8 schrijven we dit als **e8=Q**.
 
-Rokade wordt weergegeven met de speciale notatie:
+Rokade wordt weergegeven met de speciale notatie (hoofdletters o, geen nullen):
 
-+ 0-0 voor de korte rokade
-+ 0-0-0 voor de lange rokade
++ O-O voor de korte rokade
++ O-O-O voor de lange rokade
 
-Er bestaan veel varianten en uitbreidingen op de notatie zoals we ze hier opsommen, voor het project hoef je enkel de notatie zoals hierbeschreven te ondersteunen.
+Er bestaan veel varianten en uitbreidingen op de notatie zoals we ze hier opsommen, voor het project hoef je enkel de notatie zoals hier beschreven te ondersteunen.
 
 Wikipedia: https://en.wikipedia.org/wiki/Algebraic_notation_(chess)
 
