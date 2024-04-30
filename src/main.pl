@@ -3,12 +3,11 @@
 
 :- initialization(main, main).
 
+file_contains(File, GameMode, Movetext) :-
+    phrase_from_file(parse_pgn(GameMode, Movetext), File).
 
 main([File]) :-
-    open(File, read, IStream),
-    read_string(IStream, _, Input),
-    close(IStream),
-    write(Input),
-    trace,
-    parse_state(GameMode, Input, []),
-    write(GameMode).
+    % trace,
+    file_contains(File, GameMode, Movetext),
+    write(GameMode),
+    write(Movetext).
