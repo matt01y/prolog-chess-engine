@@ -1,4 +1,4 @@
-:- module(board_utils, [get_starting_board/1]).
+:- module(board_utils, [get_starting_board/1, get_piece_at/3, is_illegal_coord/1]).
 
 
 % get_starting_board(-Board)
