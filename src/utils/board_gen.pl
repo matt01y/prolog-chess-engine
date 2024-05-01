@@ -1,4 +1,4 @@
-:- module(board_utils, [get_starting_board/1, get_piece_at/3, is_illegal_coord/1]).
+:- module(board_gen, [get_starting_board/1]).
 
 
 % get_starting_board(-Board)
@@ -25,15 +25,3 @@ frontrow(Color, r(p(Color, pawn), p(Color, pawn), p(Color, pawn), p(Color, pawn)
 % gives an empty row. or checks if a row is empty.
 emptyrow(r(p(empty), p(empty), p(empty), p(empty), p(empty), p(empty), p(empty), p(empty))).
 
-% get_piece_at(+Coord, +Board, -Piece)
-% gives the piece at the given coordinate.
-get_piece_at(R/C, Board, Piece):-
-    arg(R, Board, Row),
-    arg(C, Row, Piece).
-
-% is_illegal_coord(+Coord)
-% checks if the given coordinate is illegal.
-is_illegal_coord(R/_):- R < 1, !.
-is_illegal_coord(R/_):- R > 8, !.
-is_illegal_coord(_/C):- C < 1, !.
-is_illegal_coord(_/C):- C > 8, !.
