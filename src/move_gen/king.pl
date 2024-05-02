@@ -1,5 +1,5 @@
 :- module(king, [
-    king_moves/5
+    king_moves/4
 ]).
 
-king_moves(_, _, _, _, _).
+king_moves(_, _, _, _).

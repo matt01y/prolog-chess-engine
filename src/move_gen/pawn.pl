@@ -1,3 +1,3 @@
-:- module(pawn, [pawn_moves/5]).
+:- module(pawn, [pawn_moves/4]).
 
-pawn_moves(_, _, _, _, _).
+pawn_moves(_, _, _, _).
