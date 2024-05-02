@@ -2,16 +2,6 @@
 
 :- use_module('../utils/board_utils').
 
-% increment(?A, ?B)
-% is B = A + 1?
-increment(A, B) :- B is A + 1.
-% inc_row(?R, ?NR)
-% increment the row
-inc_row(R/_, NR/_):- increment(R, NR).
-%inc_col(?C, ?NC)
-% increment the column
-inc_col(_/C, _/NC):- increment(C, NC).
-
 % horizontal_moves(+Board, +Coord, +Color, -HMoves)
 % get all the horizontal moves for the piece at the given coordinates.
 horizontal_moves(Board, Coord, Color, HMoves):-
