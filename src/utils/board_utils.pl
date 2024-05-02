@@ -15,3 +15,8 @@ is_illegal_coord(R/_):- R < 1, !.
 is_illegal_coord(R/_):- R > 8, !.
 is_illegal_coord(_/C):- C < 1, !.
 is_illegal_coord(_/C):- C > 8, !.
+
+% other_color(+Color1, -Color2)
+% gives the other color.
+other_color(white, black).
+other_color(black, white).

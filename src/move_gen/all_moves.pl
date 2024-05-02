@@ -34,9 +34,7 @@ all_moves_of_piece(Board, Coord, p(Color, queen), Hz-R):-
     horizontal_moves(Board, Coord, Color, Hz-Vt),
     vertical_moves(Board, Coord, Color, Vt-Diag),
     diagonal_moves(Board, Coord, Color, Diag-R), !.
-all_moves_of_piece(Board, Coord, p(white, king), King_moves):-
-    king_moves(Board, Coord, Color, King_moves), !.
-all_moves_of_piece(Board, Coord, p(black, king), King_moves):-
+all_moves_of_piece(Board, Coord, p(Color, king), King_moves):-
     king_moves(Board, Coord, Color, King_moves), !.
 all_moves_of_piece(Board, Coord, p(Color, pawn), Pawn_moves):-
     pawn_moves(Board, Coord, Color, Pawn_moves), !.
