@@ -3,9 +3,7 @@
 :- use_module('../utils/utils').
 :- use_module('../utils/board_utils').
 :- use_module('../move_gen/directional').
-:- use_module('../move_gen/pawn').
-:- use_module('../move_gen/knight').
-:- use_module('../move_gen/king').
+:- use_module('../move_gen/non_directional').
 
 % all_moves(+Board, +MetData, +Color, -Moves)
 % get all the moves for the given color. MetaData is information about things that happend in the past.
