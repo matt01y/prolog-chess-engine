@@ -38,8 +38,10 @@ propagate(_, _, _, _, CurCoor, X-X):- is_illegal_coord(CurCoor), !.
 % stop if we hit a piece of the same color
 propagate(_, Board, Color, _, CurCoor, X-X):- get_piece_at(CurCoor, Board, p(Color, _)), !.
 % capture piece of the opposite color and stop (this doesn't capture empty pieces, because we ask for p/2 not a p/1)
-propagate(Next, Board, Color, Origin, CurCoor, [move(Origin, CurCoor) | X]-X):- get_piece_at(CurCoor, Board, p(_, _)), !.
+propagate(_, Board, Color, Origin, CurCoor, [move(Origin, CurCoor) | X]-X):-
+    other_color(Color, OppositeColor),
+    get_piece_at(CurCoor, Board, p(OppositeColor, _)), !.
 % the tile is empty, continue propagating
-propagate(Next, Board, Color, Origin, CurCoor, [move(Origin, CurCoor)| Next]-X):-
+propagate(Next, Board, Color, Origin, CurCoor, [move(Origin, CurCoor)| NextMoves]-X):-
     call(Next, CurCoor, NextCoord),
-    propagate(Next, Board, Color, Origin, NextCoord, Next-X), !.
+    propagate(Next, Board, Color, Origin, NextCoord, NextMoves-X), !.

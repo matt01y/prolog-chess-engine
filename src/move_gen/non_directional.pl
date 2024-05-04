@@ -55,7 +55,7 @@ all_moves_from(Board, Coord, Color, Moves, Func):-
             % can't move to a square with a piece of the same color
             not(get_piece_at(NewCoord, Board, p(Color, _))),
             % Move needs to be a difference list so that we can merge em into 1
-            Move is [move(Coord, NewCoord)| X]-X 
+            Move = [move(Coord, NewCoord)| X]-X 
         ),
         K_Moves
     ),
