@@ -4,29 +4,35 @@
 
 % horizontal_moves(+Board, +Coord, +Color, -HMoves)
 % get all the horizontal moves for the piece at the given coordinates.
-horizontal_moves(Board, Coord, Color, HMoves):-
+horizontal_moves(Board, Coord, Piece, HMoves):-
     % traverse the columns
-    both_way_moves(inc_col, Board, Coord, Color, HMoves).
+    both_way_moves(inc_col, dec_col, Board, Coord, Piece, HMoves).
 
 % vertical_moves(+Board, +Coord, +Color, -VMoves)
 % get all the vertical moves for the piece at the given coordinates.
-vertical_moves(Board, Coord, Color, VMoves):-
+vertical_moves(Board, Coord, Piece, VMoves):-
     % traverse the rows
-    both_way_moves(inc_row, Board, Coord, Color, VMoves).
+    both_way_moves(inc_row, dec_row, Board, Coord, Piece, VMoves).
 
 % diagonal_moves(+Board, +Coord, +Color, -DMoves)
 % get all the diagonal moves for the piece at the given coordinates.
-diagonal_moves(Board, Coord, Color, LU-X):-
-    both_way_moves([Old, New]>>(inc_row(Old, Temp), inc_col(Temp, New)), Board, Coord, Color, LU-RU),
-    both_way_moves([Old, New]>>(inc_row(Old, Temp), inc_col(New, Temp)), Board, Coord, Color, RU-X).
+diagonal_moves(Board, Coord, Piece, LU-X):-
+    both_way_moves(
+        [Old, New]>>(inc_row(Old, Temp), inc_col(Temp, New)),
+        [Old, New]>>(dec_row(Old, Temp), dec_col(Temp, New)),
+        Board, Coord, Piece, LU-RU),
+    both_way_moves(
+        [Old, New]>>(inc_row(Old, Temp), dec_col(Temp, New)),
+        [Old, New]>>(dec_row(Old, Temp), inc_col(Temp, New)),
+        Board, Coord, Piece, RU-X).
 
 % both_way_moves(+Next, +Board, +Coord, +Color, -Moves)
 % get all the moves in both directions of OneWayNext for the given coordinates.
-both_way_moves(OneWayNext, Board, Coord, Color, OneWay-X):-
+both_way_moves(OneWayNext, OtherWayNext, Board, Coord, Piece, OneWay-X):-
     % goes in one way
-    propagate(OneWayNext, Board, Color, Coord, Coord, OneWay-OtherWay),
+    propagate(OneWayNext, Board, Piece, Coord, Coord, OneWay-OtherWay),
     % goes in the other way (the opposite of the first way)
-    propagate([Old, New]>>(call(OneWayNext, New, Old)), Board, Color, Coord, Coord, OtherWay-X).
+    propagate(OtherWayNext, Board, Piece, Coord, Coord, OtherWay-X).
 
 
 % propagate(+Next, +Board, +Color, +Origin, +CurCoor, -Moves)
@@ -36,12 +42,12 @@ both_way_moves(OneWayNext, Board, Coord, Color, OneWay-X):-
 % stop if move is illegal
 propagate(_, _, _, _, CurCoor, X-X):- is_illegal_coord(CurCoor), !.
 % stop if we hit a piece of the same color
-propagate(_, Board, Color, _, CurCoor, X-X):- get_piece_at(CurCoor, Board, p(Color, _)), !.
+propagate(_, Board, p(Color, _), _, CurCoor, X-X):- get_piece_at(CurCoor, Board, p(Color, _)), !.
 % capture piece of the opposite color and stop (this doesn't capture empty pieces, because we ask for p/2 not a p/1)
-propagate(_, Board, Color, Origin, CurCoor, [move(Origin, CurCoor) | X]-X):-
+propagate(_, Board, p(Color, Type), Origin, CurCoor, [move(Type, Origin, CurCoor) | X]-X):-
     other_color(Color, OppositeColor),
     get_piece_at(CurCoor, Board, p(OppositeColor, _)), !.
 % the tile is empty, continue propagating
-propagate(Next, Board, Color, Origin, CurCoor, [move(Origin, CurCoor)| NextMoves]-X):-
+propagate(Next, Board, p(Color, Type), Origin, CurCoor, [move(Type, Origin, CurCoor)| NextMoves]-X):-
     call(Next, CurCoor, NextCoord),
-    propagate(Next, Board, Color, Origin, NextCoord, NextMoves-X), !.
+    propagate(Next, Board, p(Color, Type), Origin, NextCoord, NextMoves-X), !.

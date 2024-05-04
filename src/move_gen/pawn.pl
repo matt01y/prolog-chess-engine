@@ -11,7 +11,7 @@
 % pawn progression
 pawn_move(_, white, move(Coord, NewCoord)):-
     inc_row(Coord, NewCoord).
-% white pawn can move 2 squares if it's still on the 7th rank (hasn't moved yet)
+% white pawn can move 2 squares if it's still on the 2th rank (hasn't moved yet)
 pawn_move(_, white, move(2/C, 4/C)).
 % capture left
 pawn_move(Board, white, move(Coord, NewCoord)):-
@@ -28,7 +28,7 @@ pawn_move(Board, white, move(Coord, NewCoord)):-
 % pawn progression
 pawn_move(_, black, move(Coord, NewCoord)):-
     dec_row(Coord, NewCoord).
-% black pawn can move 2 squares if it's still on the 2nd rank (hasn't moved yet)
+% black pawn can move 2 squares if it's still on the 7nd rank (hasn't moved yet)
 pawn_move(_, black, move(7/C, 5/C)).
 % capture left
 pawn_move(Board, black, move(Coord, NewCoord)):-

@@ -22,18 +22,18 @@ all_moves(Board, Color, Moves):-
 
 % all_moves_of_piece(+Board, +Coord, +Piece, -Moves)
 % get all the moves for the given piece at the given coordinates.
-% all_moves_of_piece(Board, Coord, p(Color, rook), Hz-R):-
-    % horizontal_moves(Board, Coord, Color, Hz-Vt),
-    % vertical_moves(Board, Coord, Color, Vt-R), !.
-% all_moves_of_piece(Board, Coord, p(Color, bishop), Bishop_moves):-
-    % diagonal_moves(Board, Coord, Color, Bishop_moves), !.
+all_moves_of_piece(Board, Coord, p(Color, rook), Hz-R):-
+    horizontal_moves(Board, Coord, p(Color, rook), Hz-Vt),
+    vertical_moves(Board, Coord, p(Color, rook), Vt-R), !.
+all_moves_of_piece(Board, Coord, p(Color, bishop), Bishop_moves):-
+    diagonal_moves(Board, Coord, p(Color, bishop), Bishop_moves), !.
 all_moves_of_piece(Board, Coord, p(Color, knight), Knight_moves):-
-    knight_moves(Board, Coord, Color, Knight_moves), !.
-% all_moves_of_piece(Board, Coord, p(Color, queen), Hz-R):-
-%     horizontal_moves(Board, Coord, Color, Hz-Vt),
-%     vertical_moves(Board, Coord, Color, Vt-Diag),
-%     diagonal_moves(Board, Coord, Color, Diag-R), !.
+    knight_moves(Board, Coord, p(Color, knight), Knight_moves), !.
+all_moves_of_piece(Board, Coord, p(Color, queen), Hz-R):-
+    horizontal_moves(Board, Coord, p(Color, queen), Hz-Vt),
+    vertical_moves(Board, Coord, p(Color, queen), Vt-Diag),
+    diagonal_moves(Board, Coord, p(Color, queen), Diag-R), !.
 all_moves_of_piece(Board, Coord, p(Color, king), King_moves):-
-    king_moves(Board, Coord, Color, King_moves), !.
+    king_moves(Board, Coord, p(Color, king), King_moves), !.
 all_moves_of_piece(Board, Coord, p(Color, pawn), Pawn_moves):-
-    pawn_moves(Board, Coord, Color, Pawn_moves), !.
+    pawn_moves(Board, Coord, p(Color, pawn), Pawn_moves), !.
