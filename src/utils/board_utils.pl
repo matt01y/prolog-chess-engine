@@ -5,7 +5,8 @@
     inc_col/2,
     dec_col/2,
     dec_row/2,
-    other_color/2
+    other_color/2,
+    move_piece/3
 ]).
 
 % get_piece_at(+Coord, +Board, -Piece)
@@ -40,3 +41,18 @@ inc_col(R/C, R/NC):- increment(C, NC).
 decrement(A, B) :- B is A - 1.
 dec_row(R/C, NR/C):- decrement(R, NR).
 dec_col(R/C, R/NC):- decrement(C, NC).
+
+% move_piece(+Board, +Move, -NewBoard)
+% move the piece from the given move.
+move_piece(Board, move(Type, From, To), NewBoard):-
+    get_piece_at(From, Board, p(Color, Type)),
+    set_piece_at(From, p(empty), Board, TempBoard),
+    set_piece_at(To, p(Color, Type), TempBoard, NewBoard).
+
+% set_piece_at(+Coord, +Piece, +Board, -NewBoard)
+% set the piece at the given coordinate. (duplicates the board, and breaks the logical paradigm by using setarg/3)
+set_piece_at(R/C, Piece, Board, NewBoard):-
+    duplicate_term(Board, NewBoard),
+    arg(R, NewBoard, Row),
+    setarg(C, Row, Piece).
+    
