@@ -3,7 +3,7 @@
 :- use_module('utils/board_gen').
 :- use_module('move_gen/all_moves').
 
-% :- initialization(main, main).
+:- initialization(main, main).
 
 file_contains(File, GameMode, Movetext) :-
     phrase_from_file(parse_pgn(GameMode, Movetext), File).

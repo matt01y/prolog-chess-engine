@@ -6,8 +6,7 @@
 :- use_module('../move_gen/non_directional').
 
 % all_moves(+Board, +Color, -Moves)
-% get all the moves for the given color. MetaData is information about things that happend in the past.
-% this is use to determine if certain special moves are possible (castling, en-passant).
+% get all the moves for the given color.
 all_moves(Board, Color, Moves):-
     findall(
         PieceMoves,
