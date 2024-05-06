@@ -2,6 +2,7 @@
 
 :- use_module(library(pio)).
 :- use_module(library(dcg/basics)).
+:- use_module(translate).
 
 % parse_state(+Input, -Movetext)
 % Parses the input string and returns the game mode, the board, the current player's color, and the meta information for the white and black players.
@@ -11,8 +12,12 @@ parse_pgn(GameMode, Movetext)-->
     pgn_moves(Movetext),
     end.
 
+% end
+% Parses the end of the file
 end --> spaces, maybe("*"), spaces, maybe("\n").
 
+% spaces
+% Parses any number of spaces (it's in the name)
 spaces --> "" | (" ", spaces).
 
 % string_without(+Split, -HalveMove)
@@ -47,27 +52,13 @@ pgn_rule(_) --> in_between("[", _, "]").
 pgn_moves([]) --> [].
 pgn_moves([WM,BM|R]) -->
     pgn_move_number(),
-    pgn_halve_move_double(WM),
-    pgn_halve_move_double(BM), !,
+    parse_known_data(WM)," ",
+    parse_known_data(BM), !, maybe(" "),
     pgn_moves(R).
 pgn_moves([HalveMove]) -->
     pgn_move_number(),
-    pgn_halve_move(HalveMove).
+    parse_known_data(HalveMove).
 
 % pgn_move_number()
 % parses the move number regex form "[0-9]+. ?""
 pgn_move_number() --> string_without_c_with(".", _), !, maybe(" ").
-
-% pgn_halve_move(-HalveMove)
-% Parses a halve move and returns it in string notation.
-pgn_halve_move_double(HalveMove) --> string_without_c_with(" ", HalveMove), {halve_check(HalveMove, HalveMove)}.
-pgn_halve_move(Out) --> string_without_c(" ", HalveMove),{halve_check(HalveMove, Out)}, !.
-
-halve_check(HalveMove, HalveMove):-
-    HalveMove \= "",
-    not(atom_concat(_, "\n", HalveMove)).
-halve_check(HalveMove, Out):-
-    HalveMove \= "",
-    atom_concat(Out, "\n", HalveMove).
-
-% halve_move(Type, EndCoord, Rest).
