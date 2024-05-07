@@ -4,8 +4,8 @@
     pawn_moves/4
     ]).
 
-:- use_module('../utils/board_utils').
-:- use_module('../utils/utils').
+:- use_module('../board/board_utils').
+:- use_module('../utils').
 :- use_module('../move_gen/pawn').
 
 % king_moves(+Board, +Coord, +Color, -King_moves)

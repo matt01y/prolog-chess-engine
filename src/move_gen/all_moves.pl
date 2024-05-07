@@ -1,7 +1,7 @@
 :- module(all_moves, [all_moves/3]).
 
-:- use_module('../utils/utils').
-:- use_module('../utils/board_utils').
+:- use_module('../utils').
+:- use_module('../board/board_utils').
 :- use_module('../move_gen/directional').
 :- use_module('../move_gen/non_directional').
 

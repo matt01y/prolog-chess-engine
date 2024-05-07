@@ -1,7 +1,7 @@
 :- module(pawn, [pawn_move/3]).
 
-:- use_module('../utils/board_utils').
-:- use_module('../utils/utils').
+:- use_module('../board/board_utils').
+:- use_module('../utils').
 
 % pawn_move(+Board, +Color, move(+Coord, -NewCoord))
 % get a plausible move for the given pawn at the given coordinates.

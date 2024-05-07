@@ -1,6 +1,6 @@
 :- module(directional, [horizontal_moves/4, vertical_moves/4, diagonal_moves/4]).
 
-:- use_module('../utils/board_utils').
+:- use_module('../board/board_utils').
 
 % horizontal_moves(+Board, +Coord, +Color, -HMoves)
 % get all the horizontal moves for the piece at the given coordinates.

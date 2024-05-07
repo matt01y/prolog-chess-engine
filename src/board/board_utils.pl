@@ -49,6 +49,9 @@ move_piece(Board, move(Type, From, To), NewBoard):-
     set_piece_at(From, p(empty), Board, TempBoard),
     set_piece_at(To, p(Color, Type), TempBoard, NewBoard).
 
+% move_piece(Board, m(castle, _, _, _, _, short), NewBoard).
+
+
 % set_piece_at(+Coord, +Piece, +Board, -NewBoard)
 % set the piece at the given coordinate. (duplicates the board, and breaks the logical paradigm by using setarg/3)
 set_piece_at(R/C, Piece, Board, NewBoard):-
