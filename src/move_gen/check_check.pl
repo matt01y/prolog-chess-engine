@@ -14,6 +14,7 @@ filter_moves_checked(Board, Color, Moves, FilteredMoves):-
         FilteredMoves
     ).
 
+% TODO: update to use new move relation
 in_check(Board, Color):-
     get_piece_at(KingCoord, Board, p(Color, king)),
     other_color(Color, OppositeColor),
