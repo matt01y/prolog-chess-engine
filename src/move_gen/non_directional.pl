@@ -51,11 +51,12 @@ all_moves_from(Board, Coord, p(Color, _), Moves, Func):-
         Move,
         ( 
             call(Func, Board, Color, move(Coord, NewCoord), MoveType),
+            write("all_moves_from\n"),
             % stop if move is illegal
             not(is_illegal_coord(NewCoord)),
             % can't move to a square with a piece of the same color
             not(get_piece_at(NewCoord, Board, p(Color, _))),
-            attacking_state(MoveType, NewCoord, Board, Color, AttackingState), !,
+            attacking_state(MoveType, NewCoord, Board, Color, AttackingState),
             % Move needs to be a difference list so that we can merge em into 1
             Move = [m(MoveType, Coord, NewCoord, AttackingState)| X]-X 
         ),

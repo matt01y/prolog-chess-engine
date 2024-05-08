@@ -5,14 +5,15 @@
 
 parse_known_data(m(castle, short)) --> "O-O".
 parse_known_data(m(castle, long)) --> "O-O-O".
-parse_known_data(m(Type, R/C, Nr/Nc, Attack, Promotion)) -->
-    parse_type(Type), !,
+% TODO: how the hell to add en passent? not? Check for it during making the moves?
+parse_known_data(m(Type, R/C, Nr/Nc, Attack)) -->
+    parse_type(Typ), !,
     parse_col_maybe(C),
     parse_row_maybe(R),
     attack(Attack),
     parse_col(Nc),
     parse_row(Nr), !,
-    parse_promotion(Promotion), !.
+    parse_promotion(Typ, Type), !.
 
 parse_type(queen) --> "Q".
 parse_type(king) --> "K".
@@ -44,8 +45,8 @@ parse_row(8) --> "8".
 attack(attacking) --> "x".
 attack(none) --> "".
 
-parse_promotion(Promo) --> "=" , !, parse_promotion_piece(Promo).
-parse_promotion(none) --> "".
+parse_promotion(pawn, promotion(Promo)) --> "=" , !, parse_promotion_piece(Promo).
+parse_promotion(Typ, Typ) --> "".
 parse_promotion_piece(queen) --> "Q".
 parse_promotion_piece(knight) --> "N".
 parse_promotion_piece(rook) --> "R".

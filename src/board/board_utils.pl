@@ -44,14 +44,25 @@ dec_col(R/C, R/NC):- decrement(C, NC).
 
 % move_piece(+Board, +Move, -NewBoard)
 % move the piece from the given move.
-move_piece(Board, m(castle, short), NewBoard):-
-    move_piece(Board, m(king, 5/1, 5/3, none, none), TempBoard),
-    move_piece(TempBoard, m(rook, 5/8, 5/6, none, none), NewBoard).
-move_piece(Board, move(Type, From, To), NewBoard):-
+
+% short castling case
+% move_piece(Board, m(castle, short), NewBoard):-
+    % move_piece(Board, m(king, 5/1, 5/3, none, none), TempBoard),
+    % move_piece(TempBoard, m(rook, 5/8, 5/6, none, none), NewBoard).
+% long castling case
+% move_piece(Board, m(castle, long), NewBoard):-
+    % move_piece(Board, m(king, 5/1, 5/4, none, none), TempBoard),
+    % move_piece(TempBoard, m(rook, 5/1, 5/3, none, none), NewBoard).
+% promotion case
+move_piece(Board, m(promotion(Type), From, To, _), NewBoard):-
+    get_piece_at(From, Board, p(Color, pawn)),
+    set_piece_at(From, p(empty), Board, TempBoard),
+    set_piece_at(To, p(Color, Type), TempBoard, NewBoard).
+% general case if all else fails. This is for just a plane and simple piece move.
+move_piece(Board, m(Type, From, To, _), NewBoard):-
     get_piece_at(From, Board, p(Color, Type)),
     set_piece_at(From, p(empty), Board, TempBoard),
     set_piece_at(To, p(Color, Type), TempBoard, NewBoard).
-
 
 % set_piece_at(+Coord, +Piece, +Board, -NewBoard)
 % set the piece at the given coordinate. (duplicates the board, and breaks the logical paradigm by using setarg/3)
