@@ -7,11 +7,41 @@
 :- use_module('../board/board_utils').
 :- use_module('../utils').
 :- use_module('../move_gen/pawn').
+:- use_module('../move_gen/check_check').
 
 % king_moves(+Board, +Coord, +Color, -King_moves)
 % get all the moves for the king at the given coordinates.
-king_moves(Board, Coord, Piece, King_moves):-
-    all_moves_from(Board, Coord, Piece, King_moves, king_options).
+king_moves(Board, Coord, Piece, Moves):-
+    all_moves_from(Board, Coord, Piece, King_moves, king_options),
+    castling_moves(Board, Coord, Piece, Castling_moves).
+    two_dl_to_one_dl(King_moves, Castling_moves, Moves).
+
+castling_moves(Board, R/C, p(Color, king), Castling_moves):-
+    meta(king_moved, Color, false),
+    short_castle(Board, Color, ShortCastle),
+    long_castle(Board, Color, LongCastle),
+    two_dl_to_one_dl(ShortCastle, LongCastle, Castling_moves).
+
+short_castle(Board, Color, Move):-
+    (meta(short_rook_moved, Color, false),
+    castle_row(Color, R),
+    get_piece_at(R/6, Board, p(empty)),
+    get_piece_at(R/7, Board, p(empty)),
+    move_piece(Board, m(king, R/5, R/6, none), TestBoard),
+    not(in_check(TestBoard, Color))) ->
+    Move = [m(castle, short)|X]-X;
+    Move = X-X.
+
+long_castle(Board, Color, Move):-
+    (meta(long_rook_moved, Color, false),
+    castle_row(Color, R),
+    get_piece_at(R/4, Board, p(empty)),
+    get_piece_at(R/3, Board, p(empty)),
+    get_piece_at(R/2, Board, p(empty)),
+    move_piece(Board, m(king, R/5, R/4, none), TestBoard),
+    not(in_check(TestBoard, Color))) ->
+    Move = [m(castle, long)|X]-X;
+    Move = X-X.
 
 % king_options(_, _, move(+Coord, -NewCoord))
 % get a plausible move for the given king at the given coordinates.
