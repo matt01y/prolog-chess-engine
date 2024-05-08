@@ -1,4 +1,4 @@
-:- module(pawn, [pawn_move/3]).
+:- module(pawn, [pawn_move_wrapper/4]).
 
 :- use_module('../board/board_utils').
 :- use_module('../utils').
@@ -7,12 +7,23 @@
 % get a plausible move for the given pawn at the given coordinates.
 % doesn't check if the move is legal. or even existent.
 
+pawn_move_wrapper(Board, Color, move(Coord, NewCoord), MoveType):-
+    pawn_move(Board, Color, move(Coord, NewCoord)),
+    pawn_move_type(Color, NewCoord, MoveType).
+% TODO: en passent
+% pawn_move_wrapper(Board, Color, move(Coord, NewCoord), en_passent).
+
+% differentiates between a normal pawn move and a promotion move.
+pawn_move_type(black, _/1, promotion):- !.
+pawn_move_type(white, _/8, promotion):- !.
+pawn_move_type(_, _, pawn).
+
 % WHITE PAWN
 % pawn progression
 pawn_move(_, white, move(Coord, NewCoord)):-
     inc_row(Coord, NewCoord).
 % white pawn can move 2 squares if it's still on the 2th rank (hasn't moved yet)
-pawn_move(_, white, move(2/C, 4/C)).
+pawn_move(Board, white, move(2/C, 4/C)):- get_piece_at(3/C, Board, p(empty)).
 % capture left
 pawn_move(Board, white, move(Coord, NewCoord)):-
     inc_row(Coord, Temp),
@@ -29,7 +40,7 @@ pawn_move(Board, white, move(Coord, NewCoord)):-
 pawn_move(_, black, move(Coord, NewCoord)):-
     dec_row(Coord, NewCoord).
 % black pawn can move 2 squares if it's still on the 7nd rank (hasn't moved yet)
-pawn_move(_, black, move(7/C, 5/C)).
+pawn_move(Board, black, move(7/C, 5/C)):- get_piece_at(6/C, Board, p(empty)).
 % capture left
 pawn_move(Board, black, move(Coord, NewCoord)):-
     dec_row(Coord, Temp),

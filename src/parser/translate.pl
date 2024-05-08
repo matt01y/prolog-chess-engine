@@ -3,16 +3,16 @@
 ]).
 
 
-parse_known_data(m(castle, _/5, _/7, none, none, short)) --> "O-O".
-parse_known_data(m(castle, _/5, _/3, none, none, long)) --> "O-O-O".
-parse_known_data(m(Type, R/C, Nr/Nc, Attack, Promotion, none)) -->
+parse_known_data(m(castle, short)) --> "O-O".
+parse_known_data(m(castle, long)) --> "O-O-O".
+parse_known_data(m(Type, R/C, Nr/Nc, Attack, Promotion)) -->
     parse_type(Type), !,
     parse_col_maybe(C),
     parse_row_maybe(R),
     attack(Attack),
     parse_col(Nc),
     parse_row(Nr), !,
-    parse_promotion(Promotion).
+    parse_promotion(Promotion), !.
 
 parse_type(queen) --> "Q".
 parse_type(king) --> "K".
@@ -44,7 +44,7 @@ parse_row(8) --> "8".
 attack(attacking) --> "x".
 attack(none) --> "".
 
-parse_promotion(Promo) --> "=" | parse_promotion_piece(Promo).
+parse_promotion(Promo) --> "=" , !, parse_promotion_piece(Promo).
 parse_promotion(none) --> "".
 parse_promotion_piece(queen) --> "Q".
 parse_promotion_piece(knight) --> "N".

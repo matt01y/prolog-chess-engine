@@ -44,12 +44,13 @@ dec_col(R/C, R/NC):- decrement(C, NC).
 
 % move_piece(+Board, +Move, -NewBoard)
 % move the piece from the given move.
+move_piece(Board, m(castle, short), NewBoard):-
+    move_piece(Board, m(king, 5/1, 5/3, none, none), TempBoard),
+    move_piece(TempBoard, m(rook, 5/8, 5/6, none, none), NewBoard).
 move_piece(Board, move(Type, From, To), NewBoard):-
     get_piece_at(From, Board, p(Color, Type)),
     set_piece_at(From, p(empty), Board, TempBoard),
     set_piece_at(To, p(Color, Type), TempBoard, NewBoard).
-
-% move_piece(Board, m(castle, _, _, _, _, short), NewBoard).
 
 
 % set_piece_at(+Coord, +Piece, +Board, -NewBoard)
