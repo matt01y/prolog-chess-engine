@@ -50,7 +50,6 @@ king_options(_, _, move(R/C, NR/NC), king):-
     member(DeltaY, [-1, 0, 1]),
     NR is R + DeltaX,
     NC is C + DeltaY.
-% TODO: castling
 
 % knight_moves(+Board, +Coord, +Color, -Knight_moves)
 % get all the moves for the knight at the given coordinates.
@@ -100,4 +99,7 @@ attacking_state(en_passent, _, _, _, attacking).
 attacking_state(_, NewCoord, Board, Color, attacking):-
     other_color(Color, OppositeColor),
     get_piece_at(NewCoord, Board, p(OppositeColor, _)).
-attacking_state(_, _, _, _, none).
+attacking_state(Type, NewCoord, Board, Color, none):-
+    Type \= attacking,
+    other_color(Color, OppositeColor),
+    not(get_piece_at(NewCoord, Board, p(OppositeColor, _))).

@@ -7,10 +7,13 @@
     dec_row/2,
     other_color/2,
     move_piece/3,
+    move_piece_wrapper/3,
     set_global_color/1,
     get_global_color/1,
     change_global_color/0,
-    castle_row/2
+    castle_row/2,
+    get_last_move/1,
+    set_last_move/1
 ]).
 
 :- use_module('../utils').
@@ -53,6 +56,11 @@ dec_col(R/C, R/NC):- decrement(C, NC).
 castle_row(white, 1).
 castle_row(black, 8).
 
+move_piece_wrapper(Board, Move, NewBoard):-
+    move_piece(Board, Move, NewBoard),
+    change_global_color,
+    set_last_move(Move).
+
 % move_piece(+Board, +Move, -NewBoard)
 % move the piece from the given move.
 
@@ -75,7 +83,13 @@ move_piece(Board, m(promotion(Type), From, To, _), NewBoard):-
     get_piece_at(From, Board, p(Color, pawn)),
     set_empty_piece_at(From, Board, TempBoard),
     set_piece_at(To, p(Color, Type), TempBoard, NewBoard).
-% general case if all else fails. This is for just a plane and simple piece move.
+% en passent case
+move_piece(Board, m(en_passent, FromR/FromC, ToR/ToC, _), NewBoard):-
+    get_piece_at(FromR/FromC, Board, p(Color, pawn)),
+    set_empty_piece_at(FromR/FromC, Board, TempBoard),
+    set_piece_at(ToR/ToC, p(Color, pawn), TempBoard, Temp2Board),
+    set_empty_piece_at(FromR/ToC, Temp2Board, NewBoard).
+% general case if all else fails. This is for just a plain and simple piece move.
 move_piece(Board, m(Type, From, To, _), NewBoard):-
     get_piece_at(From, Board, p(Color, Type)),
     set_empty_piece_at(From, Board, TempBoard),
@@ -110,5 +124,13 @@ get_global_color(Color):-
 set_global_color(Color):-
     b_setval(color, Color).
 
+% get_last_move(-LastMove)
+% get the last move.
+get_last_move(LastMove):-
+    b_getval(last_move, LastMove).
 
+% set_last_move(+LastMove)
+% set the last move.
+set_last_move(LastMove):-
+    b_setval(last_move, LastMove).
     

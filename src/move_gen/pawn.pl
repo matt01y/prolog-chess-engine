@@ -12,7 +12,8 @@ pawn_move_wrapper(Board, Color, move(Coord, NewCoord), MoveType):-
     pawn_move(Board, Color, move(Coord, NewCoord)),
     pawn_move_type(Color, NewCoord, MoveType).
 % TODO: en passent
-% pawn_move_wrapper(Board, Color, move(Coord, NewCoord), en_passent).
+pawn_move_wrapper(Board, Color, move(Coord, NewCoord), en_passent):-
+    en_passent(move(Coord, NewCoord)).
 
 % differentiates between a normal pawn move and a promotion move.
 pawn_move_type(black, _/1, promotion(Piece)):- promotion(Piece).
@@ -57,3 +58,14 @@ pawn_move(Board, black, move(Coord, NewCoord)):-
     dec_row(Coord, Temp),
     inc_col(Temp, NewCoord),
     get_piece_at(Coord, Board, p(white, _)).
+
+% en_passent(move(+Coord, -NewCoord))
+% checks if the move is an en passent move.
+en_passent(move(R/C, Nr/PrevC)):-
+    % inexplicitly check if the last move was a pawn move
+    % a double pawn move is never attacking
+    get_last_move(m(pawn, PrevR/PrevC, R/PrevC, none)),
+    % check if the last move was a double pawn move
+    abs(PrevR - R) =:= 2,
+    abs(C - PrevC) =:= 1, % pawn moves 1 rank (up/down regarding color)
+    Nr is (PrevR + R) / 2. % Where the pawn would be if it moved only one square
