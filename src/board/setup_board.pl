@@ -14,9 +14,9 @@ setup_board_helper([Move|Rest], Board, NewBoard):-
     make_move(Move, Board, NextBoard),
     setup_board_helper(Rest, NextBoard, NewBoard).
 
-% TODO:
-make_move(m(castle, short), Board, NewBoard).
-% TODO:
-make_move(m(castle, long), Board, NewBoard).
-% make_move(m(promotion(Type), From, To, _), Board, NewBoard):-
-%     pawn_moves(Board, )
+% % TODO:
+% make_move(m(castle, short), Board, NewBoard).
+% % TODO:
+% make_move(m(castle, long), Board, NewBoard).
+% % make_move(m(promotion(Type), From, To, _), Board, NewBoard):-
+% %     pawn_moves(Board, )

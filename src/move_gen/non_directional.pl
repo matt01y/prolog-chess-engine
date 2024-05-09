@@ -13,10 +13,11 @@
 % get all the moves for the king at the given coordinates.
 king_moves(Board, Coord, Piece, Moves):-
     all_moves_from(Board, Coord, Piece, King_moves, king_options),
-    castling_moves(Board, Coord, Piece, Castling_moves).
+    castling_moves(Board, Coord, Piece, Castling_moves),
     two_dl_to_one_dl(King_moves, Castling_moves, Moves).
 
-castling_moves(Board, R/C, p(Color, king), Castling_moves):-
+castling_moves(Board, R/5, p(Color, king), Castling_moves):-
+    castle_row(Color, R),
     meta(king_moved, Color, false),
     short_castle(Board, Color, ShortCastle),
     long_castle(Board, Color, LongCastle),

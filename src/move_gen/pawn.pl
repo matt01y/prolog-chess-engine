@@ -12,7 +12,7 @@ pawn_move_wrapper(Board, Color, move(Coord, NewCoord), MoveType):-
     pawn_move(Board, Color, move(Coord, NewCoord)),
     pawn_move_type(Color, NewCoord, MoveType).
 % TODO: en passent
-pawn_move_wrapper(Board, Color, move(Coord, NewCoord), en_passent):-
+pawn_move_wrapper(_, _, move(Coord, NewCoord), en_passent):-
     en_passent(move(Coord, NewCoord)).
 
 % differentiates between a normal pawn move and a promotion move.
