@@ -21,15 +21,13 @@ init:-
     set_last_move(none).
 
 main([File]) :- !,
-    file_contains(File, GameMode, Movetext), !,
+    file_contains(File, GameMode, [A|Rest]), !,
     init, !,
     get_global_color(Color),
-    write(Color),
-    
-    % setup_board(Movetext, Board),
-
-    write(GameMode),
-    write(Movetext).
+    get_starting_board(Board),
+    % trace,
+    make_move(A, Board, NewBoard), nl,
+    print_board(NewBoard).
 
 main([File, B]):-
     % TODO

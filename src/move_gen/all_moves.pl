@@ -16,8 +16,7 @@ all_moves(Board, Color, Moves):-
         ),
         PieceMovesList
     ),
-    flatten_DLs_to_one_DL(PieceMovesList, Moves),
-    write(Moves).
+    flatten_DLs_to_one_DL(PieceMovesList, Moves).
 
 % all_moves_of_piece(+Board, +Coord, +Piece, -Moves)
 % get all the moves for the given piece at the given coordinates.

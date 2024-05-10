@@ -12,6 +12,7 @@
     get_global_color/1,
     change_global_color/0,
     castle_row/2,
+    print_board/1,
     get_last_move/1,
     set_last_move/1
 ]).
@@ -134,3 +135,14 @@ get_last_move(LastMove):-
 set_last_move(LastMove):-
     b_setval(last_move, LastMove).
     
+% print_board(+Board)
+% print the board.
+print_board(b(R1, R2, R3, R4, R5, R6, R7, R8)):-
+    write(R8), nl,
+    write(R7), nl,
+    write(R6), nl,
+    write(R5), nl,
+    write(R4), nl,
+    write(R3), nl,
+    write(R2), nl,
+    write(R1), nl.

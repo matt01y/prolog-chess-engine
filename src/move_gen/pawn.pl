@@ -8,7 +8,6 @@
 % doesn't check if the move is legal. or even existent.
 
 pawn_move_wrapper(Board, Color, move(Coord, NewCoord), MoveType):-
-    write("pawn_move_wrapper\n"),
     pawn_move(Board, Color, move(Coord, NewCoord)),
     pawn_move_type(Color, NewCoord, MoveType).
 % TODO: en passent
@@ -16,8 +15,8 @@ pawn_move_wrapper(_, _, move(Coord, NewCoord), en_passent):-
     en_passent(move(Coord, NewCoord)).
 
 % differentiates between a normal pawn move and a promotion move.
-pawn_move_type(black, _/1, promotion(Piece)):- promotion(Piece).
-pawn_move_type(white, _/8, promotion(Piece)):- promotion(Piece).
+pawn_move_type(black, 1/_, promotion(Piece)):- promotion(Piece).
+pawn_move_type(white, 8/_, promotion(Piece)):- promotion(Piece).
 pawn_move_type(_, _, pawn).
 
 promotion(knight).
