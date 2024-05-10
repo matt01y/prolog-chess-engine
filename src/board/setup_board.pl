@@ -18,9 +18,23 @@ setup_board_helper([Move|Rest], Board, NewBoard):-
     make_move(Move, Board, NextBoard),
     setup_board_helper(Rest, NextBoard, NewBoard).
 
-make_move(m(castle, short), Board, NewBoard):-
-    
-    true.
+% castle case seperatly cause we can do this faster than generating all moves.
+make_move(m(castle, Lenght), Board, NewBoard):-
+    move_piece_wrapper(Board, m(castle, Lenght), NewBoard).
+% en passent case
+make_move(m(pawn, From, To, attacking), Board, NewBoard):-
+    % check if it is en passent
+    get_piece_at(To, Board, p(empty)),
+    all_moves(Board, Color, All_Moves-[]),
+    include(
+        =(m(en_passent, From, To, attacking)),
+        All_Moves,
+        Moves
+    ),
+    Moves = [Move],
+    move_piece_wrapper(Board, Move, NewBoard).
+
+% Promotion, regular
 make_move(In_move, Board, NewBoard):-
     write("\nMaking move: "),
     get_global_color(Color),
