@@ -13,10 +13,15 @@ parse_known_data(m(Type, R/C, Nr/Nc, Attack), MoveString) -->
     parse_col(Nc, NCS),
     parse_row(Nr, NRS), !,
     parse_promotion(Typ, Type, PromoString), !,
+    parse_extra(ExtraString), !,
     {atomic_list_concat(
-        [TypString, OC, OR, AttackString, NCS, NRS, PromoString],
+        [TypString, OC, OR, AttackString, NCS, NRS, PromoString, ExtraString],
         MoveString
     )}.
+
+parse_extra("+") --> "+".
+parse_extra("#") --> "#".
+parse_extra("") --> "".
 
 parse_type(queen, "Q") --> "Q".
 parse_type(king, "K") --> "K".

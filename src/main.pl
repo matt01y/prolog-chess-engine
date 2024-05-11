@@ -26,11 +26,11 @@ init(GameMode):-
 main([File]) :- !,
     file_contains(File, GameMode, Moves, Movetext), !,
     init(GameMode), !,
-    setup_board(Moves, Board),
-    atomic_list_concat(Movetext, " ", Movetext_concat),
-    write(Movetext_concat),
-    print_move_nr(Movetext),
-    next_move(Board),
+    setup_board(Moves, Board), !,
+    atomic_list_concat(Movetext, " ", Movetext_concat), !,
+    write(Movetext_concat), !,
+    print_move_nr(Movetext), !,
+    next_move(Board), !,
     nl.
 
 main([File, B]):-

@@ -35,9 +35,11 @@ diagonal_moves(Board, Coord, Piece, DMoves):-
 % get all the moves in both directions of OneWayNext for the given coordinates.
 both_way_moves(OneWayNext, OtherWayNext, Board, Coord, Piece, OneWay-X):-
     % goes in one way
-    propagate(OneWayNext, Board, Piece, Coord, Coord, OneWay-OtherWay),
+    call(OneWayNext, Coord, NextCoord),
+    propagate(OneWayNext, Board, Piece, Coord, NextCoord, OneWay-OtherWay),
     % goes in the other way (the opposite of the first way)
-    propagate(OtherWayNext, Board, Piece, Coord, Coord, OtherWay-X).
+    call(OtherWayNext, Coord, OtherWayCoord),
+    propagate(OtherWayNext, Board, Piece, Coord, OtherWayCoord, OtherWay-X).
 
 
 % propagate(+Next, +Board, +Color, +Origin, +CurCoor, -Moves)

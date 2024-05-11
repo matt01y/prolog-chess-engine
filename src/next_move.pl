@@ -10,19 +10,36 @@ next_move(Board):-
     filter_moves_checked(Board, Color, All_Moves, [Move|Rest]),
     print_next_move(Move, [Move|Rest]).
 
+print_next_move(m(pawn, _/Fc, To, Attack), Moves):-
+    include(=(m(pawn, _/Fc, To, Attack)), Moves, FMoves),
+    length(FMoves, 1),
+    print_col(Fc),
+    print_defaults(To, Attack).
 print_next_move(m(Type, _, To, Attack), Moves):-
-    include(=(m(Type, _, To, Attack)), Moves, FMoves),
+    findall(
+        Move,
+        (member(m(Type, A, To, Attack), Moves), Move = m(Type, A, To, Attack)),
+        FMoves
+    ),
     length(FMoves, 1),
     print_type(Type),
     print_defaults(To, Attack).
 print_next_move(m(Type, _/Fc, To, Attack), Moves):-
-    include(=(m(Type, _/Fc, To, Attack)), Moves, FMoves),
+    findall(
+        Move,
+        (member(m(Type, A/Fc, To, Attack), Moves), Move = m(Type, A/Fc, To, Attack)),
+        FMoves
+    ),
     length(FMoves, 1),
     print_type(Type),
     print_col(Fc),
     print_defaults(To, Attack).
 print_next_move(m(Type, Fr/_, To, Attack), Moves):-
-    include(=(m(Type, Fr/_, To, Attack)), Moves, FMoves),
+    findall(
+        Move,
+        (member(m(Type, Fr/A, To, Attack), Moves), Move = m(Type, Fr/A, To, Attack)),
+        FMoves
+    ),
     length(FMoves, 1),
     print_type(Type),
     print_row(Fr),
