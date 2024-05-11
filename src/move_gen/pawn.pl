@@ -26,10 +26,13 @@ promotion(queen).
 
 % WHITE PAWN
 % pawn progression
-pawn_move(_, white, move(Coord, NewCoord)):-
-    inc_row(Coord, NewCoord).
+pawn_move(Board, white, move(Coord, NewCoord)):-
+    inc_row(Coord, NewCoord),
+    get_piece_at(NewCoord, Board, p(empty)).
 % white pawn can move 2 squares if it's still on the 2th rank (hasn't moved yet)
-pawn_move(Board, white, move(2/C, 4/C)):- get_piece_at(3/C, Board, p(empty)).
+pawn_move(Board, white, move(2/C, 4/C)):-
+    get_piece_at(3/C, Board, p(empty)),
+    get_piece_at(4/C, Board, p(empty)).
 % capture left
 pawn_move(Board, white, move(Coord, NewCoord)):-
     inc_row(Coord, Temp),
@@ -43,10 +46,13 @@ pawn_move(Board, white, move(Coord, NewCoord)):-
 
 % BLACK PAWN
 % pawn progression
-pawn_move(_, black, move(Coord, NewCoord)):-
-    dec_row(Coord, NewCoord).
+pawn_move(Board, black, move(Coord, NewCoord)):-
+    dec_row(Coord, NewCoord),
+    get_piece_at(NewCoord, Board, p(empty)).
 % black pawn can move 2 squares if it's still on the 7nd rank (hasn't moved yet)
-pawn_move(Board, black, move(7/C, 5/C)):- get_piece_at(6/C, Board, p(empty)).
+pawn_move(Board, black, move(7/C, 5/C)):-
+    get_piece_at(6/C, Board, p(empty)),
+    get_piece_at(5/C, Board, p(empty)).
 % capture left
 pawn_move(Board, black, move(Coord, NewCoord)):-
     dec_row(Coord, Temp),

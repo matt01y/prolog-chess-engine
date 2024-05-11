@@ -36,7 +36,6 @@ make_move(m(pawn, From, To, attacking), Board, NewBoard):-
     ),
     Moves = [Move],
     move_piece_wrapper(Board, Move, NewBoard).
-
 % Promotion, regular
 make_move(In_move, Board, NewBoard):-
     % write("Making move: "), write(In_move),
