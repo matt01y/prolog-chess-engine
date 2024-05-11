@@ -62,7 +62,7 @@ pawn_move(Board, black, move(Coord, NewCoord)):-
 pawn_move(Board, black, move(Coord, NewCoord)):-
     dec_row(Coord, Temp),
     inc_col(Temp, NewCoord),
-    get_piece_at(Coord, Board, p(white, _)).
+    get_piece_at(NewCoord, Board, p(white, _)).
 
 % en_passent(move(+Coord, -NewCoord))
 % checks if the move is an en passent move.
