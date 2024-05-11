@@ -16,7 +16,7 @@ setup_board(Moves, Board):-
 setup_board_helper([], Board, Board).
 %:- write("end setup"), nl.
 setup_board_helper([Move|Rest], Board, NewBoard):-
-    % write("\nsetting up Move: "), write(Move), nl,
+    % write("setting up Move: "), write(Move), nl,
     make_move(Move, Board, NextBoard),
     setup_board_helper(Rest, NextBoard, NewBoard).
 
@@ -38,19 +38,14 @@ make_move(m(pawn, From, To, attacking), Board, NewBoard):-
     move_piece_wrapper(Board, Move, NewBoard).
 % Promotion, regular
 make_move(In_move, Board, NewBoard):-
-    % write("Making move: "), write(In_move),
     get_global_color(Color),
-    % write(" Color: "), write(Color),
     all_moves(Board, Color, All_Moves-[]), !,
-    % write(" all moves: "), write(All_Moves), nl,
     include(
         =(In_move),
         All_Moves,
         Moves
     ), !,
-    % write(" findall: "), write(Moves), nl,
     singular_move(Board, Color, Moves, M), !,
-    % write("singular move: "), write(M), nl,
     move_piece_wrapper(Board, M, NewBoard).
 
 singular_move(_, _, [Move], Move).

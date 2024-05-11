@@ -22,6 +22,7 @@ castling_moves(Board, R/5, p(Color, king), Castling_moves):-
     short_castle(Board, Color, ShortCastle),
     long_castle(Board, Color, LongCastle),
     two_dl_to_one_dl(ShortCastle, LongCastle, Castling_moves).
+castling_moves(_, _, _,X-X). 
 
 short_castle(Board, Color, Move):-
     (meta(short_rook_moved, Color, false),
