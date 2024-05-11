@@ -30,7 +30,7 @@ short_castle(Board, Color, Move):-
     get_piece_at(R/6, Board, p(empty)),
     get_piece_at(R/7, Board, p(empty)),
     move_piece(Board, m(king, R/5, R/6, none), TestBoard),
-    not(in_check(TestBoard, Color, R/5))) ->
+    not(in_check(TestBoard, Color))) ->
     Move = [m(castle, short)|X]-X;
     Move = X-X.
 
@@ -41,7 +41,7 @@ long_castle(Board, Color, Move):-
     get_piece_at(R/3, Board, p(empty)),
     get_piece_at(R/2, Board, p(empty)),
     move_piece(Board, m(king, R/5, R/4, none), TestBoard),
-    not(in_check(TestBoard, Color, R/5))) ->
+    not(in_check(TestBoard, Color))) ->
     Move = [m(castle, long)|X]-X;
     Move = X-X.
 
