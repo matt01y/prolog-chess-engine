@@ -14,7 +14,9 @@ setup_board(Moves, Board):-
 
 
 setup_board_helper([], Board, Board).
+%:- write("end setup"), nl.
 setup_board_helper([Move|Rest], Board, NewBoard):-
+    % write("\nsetting up Move: "), write(Move), nl,
     make_move(Move, Board, NextBoard),
     setup_board_helper(Rest, NextBoard, NewBoard).
 
@@ -25,6 +27,7 @@ make_move(m(castle, Lenght), Board, NewBoard):-
 make_move(m(pawn, From, To, attacking), Board, NewBoard):-
     % check if it is en passent
     get_piece_at(To, Board, p(empty)),
+    get_global_color(Color),
     all_moves(Board, Color, All_Moves-[]),
     include(
         =(m(en_passent, From, To, attacking)),
@@ -36,31 +39,21 @@ make_move(m(pawn, From, To, attacking), Board, NewBoard):-
 
 % Promotion, regular
 make_move(In_move, Board, NewBoard):-
-    write("\nMaking move: "),
+    % write("Making move: "), write(In_move),
     get_global_color(Color),
-    write("Color: "), write(Color), write(" "),
+    % write(" Color: "), write(Color),
     all_moves(Board, Color, All_Moves-[]), !,
+    % write(" all moves: "), write(All_Moves), nl,
     include(
         =(In_move),
         All_Moves,
         Moves
     ), !,
-    write("findall: "), write(Moves), nl,
+    % write(" findall: "), write(Moves), nl,
     singular_move(Board, Color, Moves, M), !,
-    write("singular move: "), write(M), nl,
+    % write("singular move: "), write(M), nl,
     move_piece_wrapper(Board, M, NewBoard).
 
 singular_move(_, _, [Move], Move).
 singular_move(Board, Color, Moves, Move):-
     filter_moves_checked(Board, Color, Moves, [Move]).
-
-
-
-    
-
-% % TODO:
-% make_move(m(castle, short), Board, NewBoard).
-% % TODO:
-% make_move(m(castle, long), Board, NewBoard).
-% % make_move(m(promotion(Type), From, To, _), Board, NewBoard):-
-% %     pawn_moves(Board, )

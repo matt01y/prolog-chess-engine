@@ -2,6 +2,7 @@
     flatten_DLs_to_one_DL/2,
     meta/3,
     set_meta/3,
+    print_move_nr/1,
     two_dl_to_one_dl/3
 ]).
 
@@ -36,3 +37,13 @@ insert((WhiteData, _), black, Data, (WhiteData, Data)).
 % get the correct field of the metadata.
 extract(white, (Data, _), Data).
 extract(black, (_, Data), Data).
+
+print_move_nr(Movetext):-
+    length(Movetext, L),
+    ModL is L mod 3,
+    print_move_nr_helper(L, ModL).
+
+print_move_nr_helper(L, 0):-
+    Number is L / 3 + 1,
+    write(" "), write(Number), write(". ").
+print_move_nr_helper(_, _):- write(" ").

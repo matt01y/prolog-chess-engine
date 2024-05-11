@@ -1,4 +1,4 @@
-:- module(parser, [parse_pgn/4]).
+:- module(parser, [parse_pgn/5]).
 
 :- use_module(library(pio)).
 :- use_module(library(dcg/basics)).
@@ -6,10 +6,10 @@
 
 % parse_state(+Input, -Movetext)
 % Parses the input string and returns the game mode, the board, the current player's color, and the meta information for the white and black players.
-parse_pgn(GameMode, Movetext)-->
+parse_pgn(GameMode, Moves, Movetext)-->
     pgn_rules(GameMode), !,
     maybe(" "),
-    pgn_moves(Movetext),
+    pgn_moves(Moves, Movetext),
     end.
 
 % end
@@ -49,16 +49,17 @@ pgn_rule(_) --> in_between("[", _, "]").
 
 % pgn_moves(-Movetext)
 % Parses all the moves and returns them in a list.
-pgn_moves([]) --> [].
-pgn_moves([WM,BM|R]) -->
-    pgn_move_number(),
-    parse_known_data(WM)," ",
-    parse_known_data(BM), !, maybe(" "),
-    pgn_moves(R).
-pgn_moves([HalveMove]) -->
-    pgn_move_number(),
-    parse_known_data(HalveMove).
+pgn_moves([], []) --> [].
+pgn_moves([WM,BM|R], [C,WT,BT|RT]) -->
+    pgn_move_number(C),
+    parse_known_data(WM, WT)," ",
+    parse_known_data(BM, BT), !, maybe(" "),
+    pgn_moves(R, RT).
+pgn_moves([HalveMove], [C,MoveString]) -->
+    pgn_move_number(C),
+    parse_known_data(HalveMove, MoveString).
 
 % pgn_move_number()
 % parses the move number regex form "[0-9]+. ?""
-pgn_move_number() --> string_without_c_with(".", _), !, maybe(" ").
+pgn_move_number(C) --> (" "|""), string_without_c_with(".", A), {string_codes(B, A), string_concat(B, ".", C)
+}, !, maybe(" ").
