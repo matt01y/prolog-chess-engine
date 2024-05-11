@@ -7,7 +7,9 @@
 next_move(Board):-
     get_global_color(Color),
     all_moves(Board, Color, All_Moves-[]),
+    % write("All moves: "), write(All_Moves), nl, nl,
     filter_moves_checked(Board, Color, All_Moves, [Move|Rest]),
+    % write("Filtered moves: "), write([Move|Rest]), nl, nl,
     print_next_move(Move, [Move|Rest]).
 
 print_next_move(m(pawn, _/Fc, To, Attack), Moves):-
