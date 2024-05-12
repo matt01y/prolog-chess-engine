@@ -1,22 +1,28 @@
-:- module(next_move, [next_move/1]).
+:- module(next_move, [
+    next_move/1,
+    print_next_move/2,
+    filterd_moves_current_color/2
+]).
 
 :- use_module('move_gen/all_moves').
 :- use_module('move_gen/check_check').
 :- use_module('board/board_utils').
 
-next_move(Board):-
+filterd_moves_current_color(Board, FMoves):-
     get_global_color(Color),
     all_moves(Board, Color, All_Moves-[]),
-    % write("All moves: "), write(All_Moves), nl, nl,
-    filter_moves_checked(Board, Color, All_Moves, [Move|Rest]),
+    filter_moves_checked(Board, Color, All_Moves, FMoves).
+
+next_move(Board):-
+    filterd_moves_current_color(Board, [Move|Rest]),
     % write("Filtered moves: "), write([Move|Rest]), nl, nl,
     print_next_move(Move, [Move|Rest]).
 
-print_next_move(m(pawn, _/Fc, To, Attack), Moves):-
-    include(=(m(pawn, _/Fc, To, Attack)), Moves, FMoves),
+print_next_move(m(pawn, _/Fc, To, attacking), Moves):-
+    include(=(m(pawn, _/Fc, To, attacking)), Moves, FMoves),
     length(FMoves, 1),
     print_col(Fc),
-    print_defaults(To, Attack).
+    print_defaults(To, attacking).
 print_next_move(m(Type, _, To, Attack), Moves):-
     findall(
         Move,

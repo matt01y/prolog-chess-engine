@@ -6,13 +6,14 @@
 :- use_module('board/board_utils').
 :- use_module('next_move').
 :- use_module('utils').
+:- use_module('move_gen/check_check').
 
 :- initialization(main, main).
 
 file_contains(File, GameMode, Moves, Movetext) :-
     phrase_from_file(parse_pgn(GameMode, Moves, Movetext), File).
 
-% init
+% init(+GameMode)
 % initialize the global states.
 init(GameMode):-
     set_global_color(white),
@@ -23,20 +24,32 @@ init(GameMode):-
     b_setval(gamemode, GameMode),
     set_last_move(none).
 
-main([File]) :- !,
+% startup (+File, -Movetext, -Movetext_concat, -Board)
+% Parse the file and setup the board.
+% this function exists to execute the overlapping parts of main and main test.
+startup(File, Movetext, Movetext_concat, Board):-
     file_contains(File, GameMode, Moves, Movetext), !,
     init(GameMode), !,
     setup_board(Moves, Board), !,
-    atomic_list_concat(Movetext, " ", Movetext_concat), !,
+    atomic_list_concat(Movetext, " ", Movetext_concat), !.
+
+% main (+File)
+% Main function to run the program.
+main([File]) :- !,
+    startup(File, Movetext, Movetext_concat, Board), !,
     write(Movetext_concat), !,
     print_move_nr(Movetext), !,
     next_move(Board), !,
     nl.
-
 main([File, B]):-
-    % TODO
     string_codes("TEST", B), !,
-    write(File),
-    write("\n"),
-    write(B),
-    write("\n").
+    startup(File, Movetext, Movetext_concat, Board), !,
+    filterd_moves_current_color(Board, FMoves), !,
+    forall(
+        member(Move, FMoves),
+        (
+            write(Movetext_concat),
+            print_move_nr(Movetext),
+            print_next_move(Move, FMoves), nl
+        )
+    ), !.
