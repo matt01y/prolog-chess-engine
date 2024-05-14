@@ -1,5 +1,5 @@
 :- module(next_move, [
-    next_move/1,
+    next_move/2,
     print_next_move/2,
     filterd_moves_current_color/2
 ]).
@@ -13,10 +13,22 @@ filterd_moves_current_color(Board, FMoves):-
     all_moves(Board, Color, All_Moves-[]),
     filter_moves_checked(Board, Color, All_Moves, FMoves).
 
-next_move(Board):-
+next_move(Board, ""):-
     filterd_moves_current_color(Board, [Move|Rest]),
-    % write("Filtered moves: "), write([Move|Rest]), nl, nl,
-    print_next_move(Move, [Move|Rest]).
+    print_next_move(Move, [Move|Rest]),
+    move_piece_wrapper(Board, Move, NewBoard),
+    get_global_color(Color),
+    current_state(NewBoard, Color, State),
+    print_state(State).
+next_move(_, _).
+
+print_state(check):- write("+").
+print_state(checkmate):- write("# "), get_global_color(C), win(C).
+print_state(remise):- write(" 1/2-1/2").
+print_state(normal).
+
+win(white):- write("1-0").
+win(black):- write("0-1").
 
 print_next_move(m(promotion(PType), _/Fc, To, Attack), Moves):-
     include(=(m(promotion(PType), _/Fc, To, Attack)), Moves, FMoves),
@@ -73,12 +85,6 @@ print_defaults(Tr/Tc, Attack):-
     print_row(Tr),
     b_getval(game_state, Value),
     print_state(Value).
-
-% print_state(+State)
-% print the state of the game.
-print_state(check):- write("+").
-print_state(checkmate):- write("#").
-print_state(normal).
 
 % print_type(+Type)
 % print the type of the piece.

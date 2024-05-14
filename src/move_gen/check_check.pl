@@ -1,5 +1,6 @@
 :- module(check_check,[
     filter_moves_checked/4,
+    current_state/3,
     in_check/2
 ]).
 
@@ -17,6 +18,11 @@ filter_moves_checked(Board, Color, Moves, FilteredMoves):-
         FilteredMoves
     ).
 
+current_state(Board, Color, check):- in_check(Board, Color).
+current_state(Board, Color, checkmate):- checkmate(Board, Color).
+current_state(Board, Color, remise):- remise(Board, Color).
+current_state(_, _, normal).
+
 in_check(Board, Color):-
     get_piece_at(KingCoord, Board, p(Color, king)),
     other_color(Color, OppositeColor),
@@ -24,3 +30,13 @@ in_check(Board, Color):-
     include(=(m(_, _, KingCoord, attacking)), Moves, KingMoves),
     length(KingMoves, Len),
     Len > 0.
+
+checkmate(Board, Color):-
+    in_check(Board, Color),
+    filter_moves_checked(Board, Color, _, FilteredMoves),
+    length(FilteredMoves, 0).
+
+remise(Board, Color):-
+    not(in_check(Board, Color)),
+    filter_moves_checked(Board, Color, _, FilteredMoves),
+    length(FilteredMoves, 0).
