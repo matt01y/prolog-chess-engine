@@ -19,9 +19,9 @@ parse_known_data(m(Type, R/C, Nr/Nc, Attack), MoveString) -->
         MoveString
     )}.
 
-parse_extra("+") --> "+".
-parse_extra("#") --> "#".
-parse_extra("") --> "".
+parse_extra("+") --> "+", {b_setval(game_state, check)}.
+parse_extra("#") --> "#", {b_setval(game_state, checkmate)}.
+parse_extra("") --> "", {b_setval(game_state, normal)}.
 
 parse_type(queen, "Q") --> "Q".
 parse_type(king, "K") --> "K".

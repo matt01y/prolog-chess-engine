@@ -18,6 +18,13 @@ next_move(Board):-
     % write("Filtered moves: "), write([Move|Rest]), nl, nl,
     print_next_move(Move, [Move|Rest]).
 
+print_next_move(m(promotion(PType), _/Fc, To, Attack), Moves):-
+    include(=(m(promotion(PType), _/Fc, To, Attack)), Moves, FMoves),
+    length(FMoves, 1),
+    print_col(Fc),
+    print_defaults(To, Attack),
+    write("="), print_type(PType).
+
 print_next_move(m(pawn, _/Fc, To, attacking), Moves):-
     include(=(m(pawn, _/Fc, To, attacking)), Moves, FMoves),
     length(FMoves, 1),
@@ -63,7 +70,15 @@ print_next_move(m(Type, Fr/Fc, To, Attack), _):-
 print_defaults(Tr/Tc, Attack):-
     print_attack(Attack),
     print_col(Tc),
-    print_row(Tr).
+    print_row(Tr),
+    b_getval(game_state, Value),
+    print_state(Value).
+
+% print_state(+State)
+% print the state of the game.
+print_state(check):- write("+").
+print_state(checkmate):- write("#").
+print_state(normal).
 
 % print_type(+Type)
 % print the type of the piece.
