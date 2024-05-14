@@ -4,7 +4,7 @@
 :- use_module('move_gen/all_moves').
 :- use_module('board/setup_board').
 :- use_module('board/board_utils').
-:- use_module('next_move').
+:- use_module('next_move/next_move').
 :- use_module('utils').
 :- use_module('move_gen/check_check').
 

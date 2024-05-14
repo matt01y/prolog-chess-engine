@@ -33,10 +33,12 @@ in_check(Board, Color):-
 
 checkmate(Board, Color):-
     in_check(Board, Color),
-    filter_moves_checked(Board, Color, _, FilteredMoves),
+    all_moves(Board, Color, Moves-[]),
+    filter_moves_checked(Board, Color, Moves, FilteredMoves),
     length(FilteredMoves, 0).
 
 remise(Board, Color):-
     not(in_check(Board, Color)),
-    filter_moves_checked(Board, Color, _, FilteredMoves),
+    all_moves(Board, Color, Moves-[]),
+    filter_moves_checked(Board, Color, Moves, FilteredMoves),
     length(FilteredMoves, 0).
