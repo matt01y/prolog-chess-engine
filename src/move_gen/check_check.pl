@@ -1,6 +1,7 @@
 :- module(check_check,[
     filter_moves_checked/4,
     current_state/3,
+    checkmate/2,
     in_check/2
 ]).
 

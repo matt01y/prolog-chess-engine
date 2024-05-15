@@ -3,7 +3,15 @@
 ]).
 
 :- use_module('../board/board_utils').
+:- use_module('../move_gen/check_check').
 
+% heuristic(+Board, -Value)
+% Value is the heuristic value of the board.
+
+heuristic(Board, -10000):-
+    checkmate(Board, white), !.
+heuristic(Board, 10000):-
+    checkmate(Board, black), !.
 
 heuristic(Board, Value):-
     findall(p(C,T), get_piece_at(_, Board, p(C,T)), Pieces),
