@@ -7,6 +7,7 @@
 :- use_module('../move_gen/all_moves').
 :- use_module('../move_gen/check_check').
 :- use_module('../board/board_utils').
+:- use_module('heuristic').
 
 filterd_moves_current_color(Board, FMoves):-
     get_global_color(Color),
