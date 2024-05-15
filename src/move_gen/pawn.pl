@@ -10,19 +10,24 @@
 pawn_move_wrapper(Board, Color, move(Coord, NewCoord), MoveType):-
     pawn_move(Board, Color, move(Coord, NewCoord)),
     pawn_move_type(Color, NewCoord, MoveType).
-% TODO: en passent
 pawn_move_wrapper(_, _, move(Coord, NewCoord), en_passent):-
     en_passent(move(Coord, NewCoord)).
 
+% pawn_move_type(+Color, +Coord, -MoveType)
 % differentiates between a normal pawn move and a promotion move.
 pawn_move_type(black, 1/_, promotion(Piece)):- !, promotion(Piece).
 pawn_move_type(white, 8/_, promotion(Piece)):- !, promotion(Piece).
 pawn_move_type(_, _, pawn).
 
+% promotion(?Piece)
+% the possible pieces a pawn can promote to.
 promotion(knight).
 promotion(bishop).
 promotion(rook).
 promotion(queen).
+
+% pawn_move(+Board, +Color, move(+Coord, -NewCoord))
+% get a plausible move for the given pawn at the given coordinates.
 
 % WHITE PAWN
 % pawn progression

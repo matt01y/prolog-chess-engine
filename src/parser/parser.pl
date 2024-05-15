@@ -64,5 +64,7 @@ pgn_moves([], []) --> [].
 
 % pgn_move_number()
 % parses the move number regex form "[0-9]+. ?""
-pgn_move_number(C) --> (" "|""), string_without_c_with(".", A), {string_codes(B, A), string_concat(B, ".", C)
-}, !, maybe(" ").
+pgn_move_number(C) -->
+    (" "|""),
+    string_without_c_with(".", A), {string_codes(B, A), string_concat(B, ".", C)}, !,
+    maybe(" ").

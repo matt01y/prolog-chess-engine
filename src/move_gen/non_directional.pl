@@ -16,6 +16,8 @@ king_moves(Board, Coord, Piece, Moves):-
     castling_moves(Board, Coord, Piece, Castling_moves),
     two_dl_to_one_dl(King_moves, Castling_moves, Moves).
 
+% castling_moves(+Board, +Coord, +Color, -Castling_moves)
+% get all the castling moves for the king at the given coordinates.
 castling_moves(Board, R/5, p(Color, king), Castling_moves):-
     castle_row(Color, R),
     meta(king_moved, Color, false),
@@ -24,6 +26,8 @@ castling_moves(Board, R/5, p(Color, king), Castling_moves):-
     two_dl_to_one_dl(ShortCastle, LongCastle, Castling_moves).
 castling_moves(_, _, _,X-X). 
 
+% short_castle(+Board, +Color, -Move)
+% get the short castle move for the given color.
 short_castle(Board, Color, Move):-
     (meta(short_rook_moved, Color, false),
     castle_row(Color, R),
@@ -34,6 +38,8 @@ short_castle(Board, Color, Move):-
     Move = [m(castle, short)|X]-X;
     Move = X-X.
 
+% long_castle(+Board, +Color, -Move)
+% get the long castle move for the given color.
 long_castle(Board, Color, Move):-
     (meta(long_rook_moved, Color, false),
     castle_row(Color, R),

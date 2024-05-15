@@ -10,6 +10,9 @@
 
 :- initialization(main, main).
 
+% file_contains(+File, -GameMode, -Moves, -Movetext, -End)
+% Parse the file and get the game mode, moves, movetext and end.
+% This function is inspired by the code given in dummy.pl
 file_contains(File, GameMode, Moves, Movetext, End) :-
     phrase_from_file(parse_pgn(GameMode, Moves, Movetext, End), File).
 
@@ -35,6 +38,8 @@ startup(File, Movetext, Movetext_concat, Board, End):-
 
 % main (+File)
 % Main function to run the program.
+
+% when 1 arg is given that is the file name. And find the next move
 main([File]) :- !,
     startup(File, Movetext, Movetext_concat, Board, End), !,
     write(Movetext_concat), !,
@@ -42,6 +47,7 @@ main([File]) :- !,
     write(End), !,
     next_move(Board, End), !,
     nl.
+% in case the "TEST" arg is given, the program will print all possible moves.
 main([File, B]):-
     string_codes("TEST", B), !,
     startup(File, Movetext, Movetext_concat, Board, End), !,

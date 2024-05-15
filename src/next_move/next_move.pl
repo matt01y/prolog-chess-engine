@@ -10,11 +10,15 @@
 :- use_module('heuristic').
 :- use_module('minmax').
 
+% filterd_moves_current_color(+Board, -FMoves)
+% get all the moves for the current color and filter out the moves that would put the king in check.
 filterd_moves_current_color(Board, FMoves):-
     get_global_color(Color),
     all_moves(Board, Color, All_Moves-[]),
     filter_moves_checked(Board, Color, All_Moves, FMoves).
 
+% next_move(+Board, +End)
+% get and print the next move.
 next_move(Board, ""):-
     get_global_color(Color),
     filterd_moves_current_color(Board, Moves), % keep this above the minimax call (due to changing global state)
@@ -23,32 +27,42 @@ next_move(Board, ""):-
     move_piece_wrapper(Board, Move, NewBoard),
     current_state(NewBoard, Color, State),
     print_state(State).
+% if End != "", then the game is done and there is no move to be printed.
 next_move(_, _).
 
+% print_state(+State)
+% print the state of the game.
 print_state(check):- write("+").
 print_state(checkmate):- write("# "), get_global_color(C), win(C).
 print_state(remise):- write(" 1/2-1/2").
 print_state(normal).
 
+% win(+Color)
+% print the win state.
 win(white):- write("1-0").
 win(black):- write("0-1").
 
+% print_next_move(+Move, +Moves)
+% print the next move.
+
+% promotion case
 print_next_move(m(promotion(PType), _/Fc, To, Attack), Moves):-
     include(=(m(promotion(PType), _/Fc, To, Attack)), Moves, FMoves),
     length(FMoves, 1),
     print_col(Fc),
     print_defaults(To, Attack),
     write("="), print_type(PType).
-
+% en passent case (it's always an attacking state)
 print_next_move(m(en_passent, _/Fc, To, attacking), _):-
     print_col(Fc),
     print_defaults(To, attacking).
-
+% attacking pawn case
 print_next_move(m(pawn, _/Fc, To, attacking), Moves):-
     include(=(m(pawn, _/Fc, To, attacking)), Moves, FMoves),
     length(FMoves, 1),
     print_col(Fc),
     print_defaults(To, attacking).
+% least possible term to be printed.
 print_next_move(m(Type, _, To, Attack), Moves):-
     findall(
         Move,
@@ -58,6 +72,7 @@ print_next_move(m(Type, _, To, Attack), Moves):-
     length(FMoves, 1),
     print_type(Type),
     print_defaults(To, Attack).
+% print extra info for the move.
 print_next_move(m(Type, _/Fc, To, Attack), Moves):-
     findall(
         Move,
@@ -68,6 +83,7 @@ print_next_move(m(Type, _/Fc, To, Attack), Moves):-
     print_type(Type),
     print_col(Fc),
     print_defaults(To, Attack).
+% in case the above cases don't match.
 print_next_move(m(Type, Fr/_, To, Attack), Moves):-
     findall(
         Move,
@@ -78,6 +94,7 @@ print_next_move(m(Type, Fr/_, To, Attack), Moves):-
     print_type(Type),
     print_row(Fr),
     print_defaults(To, Attack).
+% for the rare case where every piece of data is needed.
 print_next_move(m(Type, Fr/Fc, To, Attack), _):-
     print_type(Type),
     print_col(Fc),

@@ -38,12 +38,17 @@ insert((WhiteData, _), black, Data, (WhiteData, Data)).
 extract(white, (Data, _), Data).
 extract(black, (_, Data), Data).
 
+% print_move_nr(+Movetext)
+% print the move number.
 print_move_nr(Movetext):-
     length(Movetext, L),
     ModL is L mod 3,
     print_move_nr_helper(L, ModL).
 
+% print_move_nr_helper(+L, +ModL)
+% print the move number if it is the correct value after modulus 3.
 print_move_nr_helper(L, 0):-
     Number is L / 3 + 1,
     write(" "), write(Number), write(". ").
+% otherwise just print a space.
 print_move_nr_helper(_, _):- write(" ").

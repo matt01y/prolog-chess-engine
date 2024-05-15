@@ -8,11 +8,12 @@
 % heuristic(+Board, -Value)
 % Value is the heuristic value of the board.
 
+% the checkmate case should be rewarded/punished the most.
 heuristic(Board, -10000):-
     checkmate(Board, white), !.
 heuristic(Board, 10000):-
     checkmate(Board, black), !.
-
+% base case
 heuristic(Board, Value):-
     findall(p(C,T), get_piece_at(_, Board, p(C,T)), Pieces),
     partition(is_white, Pieces, WhitePieces, BlackPieces),
@@ -20,8 +21,12 @@ heuristic(Board, Value):-
     score_pieces(BlackPieces, BlackScore),
     Value is WhiteScore - BlackScore.
 
+% is_white(+Piece)
+% true if the piece is white.
 is_white(p(white, _)).
 
+% score_pieces(+Pieces, -Score)
+% Score is the sum of the values of the pieces in Pieces.
 score_pieces([], 0).
 score_pieces([p(_, T)|Pieces], Score):-
     score_pieces(Pieces, RestScore),
