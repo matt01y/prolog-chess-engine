@@ -40,6 +40,10 @@ print_next_move(m(promotion(PType), _/Fc, To, Attack), Moves):-
     print_defaults(To, Attack),
     write("="), print_type(PType).
 
+print_next_move(m(en_passent, _/Fc, To, attacking), _):-
+    print_col(Fc),
+    print_defaults(To, attacking).
+
 print_next_move(m(pawn, _/Fc, To, attacking), Moves):-
     include(=(m(pawn, _/Fc, To, attacking)), Moves, FMoves),
     length(FMoves, 1),
