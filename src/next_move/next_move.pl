@@ -8,6 +8,7 @@
 :- use_module('../move_gen/check_check').
 :- use_module('../board/board_utils').
 :- use_module('heuristic').
+:- use_module('minmax').
 
 filterd_moves_current_color(Board, FMoves):-
     get_global_color(Color),
@@ -15,10 +16,11 @@ filterd_moves_current_color(Board, FMoves):-
     filter_moves_checked(Board, Color, All_Moves, FMoves).
 
 next_move(Board, ""):-
-    filterd_moves_current_color(Board, [Move|Rest]),
-    print_next_move(Move, [Move|Rest]),
-    move_piece_wrapper(Board, Move, NewBoard),
     get_global_color(Color),
+    filterd_moves_current_color(Board, Moves), % keep this above the minimax call (due to changing global state)
+    minimax(Board, Color, Move, _, 2),
+    print_next_move(Move, Moves),
+    move_piece_wrapper(Board, Move, NewBoard),
     current_state(NewBoard, Color, State),
     print_state(State).
 next_move(_, _).

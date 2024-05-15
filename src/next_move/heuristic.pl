@@ -16,14 +16,8 @@ heuristic(Board, 10000):-
 heuristic(Board, Value):-
     findall(p(C,T), get_piece_at(_, Board, p(C,T)), Pieces),
     partition(is_white, Pieces, WhitePieces, BlackPieces),
-    write("white: "), 
     score_pieces(WhitePieces, WhiteScore),
-    length(WhitePieces, L),
-    write(L), write(" "),
-    write(WhiteScore), nl,
     score_pieces(BlackPieces, BlackScore),
-    length(BlackPieces, L2),
-    write("black: "), write(L2), write(" "), write(BlackScore), nl,
     Value is WhiteScore - BlackScore.
 
 is_white(p(white, _)).
